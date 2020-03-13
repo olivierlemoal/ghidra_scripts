@@ -13,8 +13,8 @@ functionManager = currentProgram.getFunctionManager()
 addressFactory = currentProgram.getAddressFactory()
 
 if not os.path.isfile(path_binary):
-    print("Can't find file : {}".format(path_binary))
-    sys.exit(1)
+    # Imported file is not here anymore, ask user
+    path_binary = str(askFile("Select binary file", "Ok"))
 
 process = subprocess.Popen(['eu-readelf', '-Ws', '--elf-section', path_binary], stdout=subprocess.PIPE)
 stdout = process.communicate()[0].splitlines()
@@ -26,9 +26,9 @@ for l in stdout[4:]:
         func_name = fields[7]
         f = functionManager.getFunctionAt(address)
         if f:
-            print("Function {} found at {}".format(func_name, address))
+            print("Rename function {} to {} (at 0x{})".format(f.getName(), func_name, address))
             f.setName(func_name, SourceType.USER_DEFINED)
         else:
-            print("No function found at {} ({})".format(address, func_name))
+            print("No function defined at 0x{} ({})".format(address, func_name))
 
 
