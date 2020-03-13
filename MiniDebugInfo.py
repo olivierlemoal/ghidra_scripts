@@ -26,7 +26,7 @@ for l in stdout[4:]:
         func_name = fields[7]
         f = functionManager.getFunctionAt(address)
         if f:
-            print("Rename function {} to {} (at 0x{})".format(f.getName(), func_name, address))
+            print("Rename function {} to {} ( at 0x{} )".format(f.getName(), func_name, address))
             f.setName(func_name, SourceType.USER_DEFINED)
         else:
             print("No function defined at 0x{} ({})".format(address, func_name))
