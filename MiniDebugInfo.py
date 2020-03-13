@@ -7,6 +7,7 @@ import subprocess
 import sys
 import os.path
 from ghidra.program.model.symbol import SourceType
+from ghidra.util.exception import CancelledException
 
 path_binary = currentProgram.executablePath
 functionManager = currentProgram.getFunctionManager()
@@ -14,7 +15,11 @@ addressFactory = currentProgram.getAddressFactory()
 
 if not os.path.isfile(path_binary):
     # Imported file is not here anymore, ask user
-    path_binary = str(askFile("Select binary file", "Ok"))
+    try:
+        path_binary = str(askFile("Select binary file", "Ok"))
+    except CancelledException:
+        print("Cancelled by user")
+        sys.exit(0)
 
 process = subprocess.Popen(['eu-readelf', '-Ws', '--elf-section', path_binary], stdout=subprocess.PIPE)
 stdout = process.communicate()[0].splitlines()
