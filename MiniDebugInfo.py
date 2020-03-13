@@ -16,7 +16,7 @@ addressFactory = currentProgram.getAddressFactory()
 if not os.path.isfile(path_binary):
     # Imported file is not here anymore, ask user
     try:
-        path_binary = str(askFile("Select binary file", "Ok"))
+        path_binary = askFile("Select binary file", "Ok").getPath()
     except CancelledException:
         print("Cancelled by user")
         sys.exit(0)
